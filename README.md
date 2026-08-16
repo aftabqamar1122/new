@@ -3,11 +3,13 @@
 Your own AI companion in the terminal. It talks with you, remembers what you tell it between
 sessions, keeps your tasks, and — if you connect Google — handles your email and calendar too.
 
+Runs on **DeepSeek** or **Anthropic**. It picks whichever API key you have.
+
 Two ways in:
 
 | | |
 |---|---|
-| **`python chat.py`** | **Your personal agent.** Conversation with long-term memory. Needs only an Anthropic API key. |
+| **`python chat.py`** | **Your personal agent.** Conversation with long-term memory. Needs only a model API key. |
 | `python main.py` | The daily-activities assistant: email, calendar, tasks, morning brief. Needs Google credentials. |
 
 ## Talk to your agent
@@ -16,7 +18,7 @@ Two ways in:
 
 ```bash
 pip install -r requirements.txt
-export ANTHROPIC_API_KEY=your_key_here
+export DEEPSEEK_API_KEY=your_key_here
 python chat.py
 ```
 
@@ -38,10 +40,13 @@ Come back tomorrow and it still knows who you are.
 ### 2. Options
 
 ```bash
-python chat.py --name Max          # name your agent something else
-python chat.py --user Aftab        # tell it what to call you
-python chat.py --fresh             # don't reload the last conversation
-python chat.py "how's my week?"    # one-shot: ask and exit
+python chat.py --name Max              # name your agent something else
+python chat.py --user Aftab            # tell it what to call you
+python chat.py --fresh                 # don't reload the last conversation
+python chat.py "how's my week?"        # one-shot: ask and exit
+python chat.py --model deepseek-reasoner   # pick a different model
+python chat.py --provider anthropic    # force a provider
+python chat.py --no-stream             # wait for the full reply
 ```
 
 In-chat commands: `memories` (see everything it knows) · `new` (fresh conversation, keeps memory) ·
@@ -55,6 +60,20 @@ Ask it to forget something and it will delete the entry. Run `memories` to see t
 
 Your last 20 turns are reloaded at startup, so a conversation can span days.
 
+## Choosing a provider
+
+| Provider | API key | Default model | Get a key |
+|---|---|---|---|
+| DeepSeek | `DEEPSEEK_API_KEY` | `deepseek-chat` | [platform.deepseek.com](https://platform.deepseek.com/api_keys) |
+| Anthropic | `ANTHROPIC_API_KEY` | `claude-sonnet-5` | [console.anthropic.com](https://console.anthropic.com) |
+
+With both keys set, DeepSeek is used; override with `--provider anthropic`. Change the model with
+`--model` or by exporting `DEEPSEEK_MODEL` / `ANTHROPIC_MODEL`.
+
+Adding another provider means one class in `llm.py` — implement `run()`, `assistant_message()`, and
+`tool_result_messages()`, then register it in `build_backend()`. Tool schemas are written once and
+translated per provider, so nothing else changes.
+
 ## Email and calendar (optional)
 
 The personal agent picks up Gmail and Calendar tools automatically once Google credentials exist —
@@ -65,18 +84,19 @@ python setup.py
 ```
 
 Follow the on-screen instructions to:
-- Set your `ANTHROPIC_API_KEY`
+- Set your model API key (DeepSeek or Anthropic)
 - Download `credentials.json` from Google Cloud Console
 
 On first use a browser window opens for Google OAuth2 authorization. After approving, the token is
 saved to `~/.daily_agent/token.json` — you only need to authorize once.
 
-`python main.py` runs the original task-focused assistant against the same Google setup.
+`python main.py` runs the original task-focused assistant against the same Google setup. (That one
+is Anthropic-only; `chat.py` is the one that speaks both providers.)
 
 ## Prerequisites
 
 - Python 3.11+
-- An [Anthropic API key](https://console.anthropic.com)
+- A [DeepSeek](https://platform.deepseek.com/api_keys) or [Anthropic](https://console.anthropic.com) API key
 - *Optional:* a Google Cloud project with Gmail API + Google Calendar API enabled
 
 ## Tests
@@ -85,7 +105,7 @@ saved to `~/.daily_agent/token.json` — you only need to authorize once.
 python test_personal_agent.py
 ```
 
-No API key or network needed — the Anthropic client is stubbed.
+No API key or network needed — the provider SDKs are stubbed.
 
 ## Google API Setup (detailed)
 
@@ -120,11 +140,13 @@ Commands: `clear` · `reset` · `help` · `exit`
 .
 ├── chat.py              # Personal agent CLI  ← start here
 ├── personal_agent.py    # Conversational agent: memory + tasks (+ Google if configured)
+├── llm.py               # Provider backends: DeepSeek, Anthropic
 ├── main.py              # Daily-activities CLI
 ├── agent.py             # Task-focused agent loop over the Google tools
 ├── tools/
 │   ├── memory_tools.py  # Long-term memory (SQLite)
 │   ├── task_tools.py    # Local task manager (SQLite)
+│   ├── google_tools.py  # Gmail + Calendar schemas and dispatch
 │   ├── email_tools.py   # Gmail API wrappers
 │   └── calendar_tools.py # Google Calendar API wrappers
 ├── auth/

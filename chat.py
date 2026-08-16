@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 """Talk to your personal agent.
 
-    export ANTHROPIC_API_KEY=sk-ant-...
+    export DEEPSEEK_API_KEY=sk-...
     python chat.py
 """
 
 import argparse
-import os
 import sys
 
 from rich.console import Console
@@ -15,6 +14,7 @@ from rich.panel import Panel
 from rich.prompt import Prompt
 from rich.theme import Theme
 
+from llm import ENV_KEYS, MissingAPIKey, build_backend
 from personal_agent import PersonalAgent
 from tools import memory_tools
 
@@ -69,16 +69,27 @@ def run(argv: list[str] | None = None) -> int:
     parser.add_argument("--name", default="Ava", help="What to call your agent (default: Ava)")
     parser.add_argument("--user", default="", help="What the agent should call you")
     parser.add_argument("--fresh", action="store_true", help="Start without reloading the last conversation")
+    parser.add_argument(
+        "--provider",
+        default="auto",
+        choices=["auto", *ENV_KEYS],
+        help="Which model provider to use (default: whichever API key is set)",
+    )
+    parser.add_argument("--model", default="", help="Override the model, e.g. deepseek-reasoner")
+    parser.add_argument("--no-stream", action="store_true", help="Wait for the full reply instead of streaming")
     parser.add_argument("message", nargs="*", help="Say one thing and exit, instead of chatting")
     args = parser.parse_args(argv)
 
-    api_key = os.environ.get("ANTHROPIC_API_KEY")
-    if not api_key:
-        console.print("[error]ANTHROPIC_API_KEY is not set.[/]")
-        console.print("Run: [bold]export ANTHROPIC_API_KEY=your_key_here[/]")
+    try:
+        backend = build_backend(provider=args.provider, model=args.model, stream=not args.no_stream)
+    except (MissingAPIKey, ValueError) as e:
+        console.print(f"[error]{e}[/]")
+        return 1
+    except RuntimeError as e:  # missing SDK package
+        console.print(f"[error]{e}[/]")
         return 1
 
-    agent = PersonalAgent(api_key=api_key, agent_name=args.name, user_name=args.user, resume=not args.fresh)
+    agent = PersonalAgent(backend=backend, agent_name=args.name, user_name=args.user, resume=not args.fresh)
 
     # One-shot mode: `python chat.py "how's my week looking?"`
     if args.message:
@@ -86,7 +97,7 @@ def run(argv: list[str] | None = None) -> int:
         console.print()
         return 0
 
-    console.print(f"\n[agent]{args.name}[/] [system]· your personal agent[/]")
+    console.print(f"\n[agent]{args.name}[/] [system]· your personal agent · {backend.provider}/{backend.model}[/]")
     console.print(f"[system]{_greeting(agent)}[/]")
     console.print("[system]Type [bold]help[/] for ideas, [bold]exit[/] to leave.[/]\n")
 

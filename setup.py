@@ -11,19 +11,32 @@ from rich.prompt import Prompt, Confirm
 console = Console()
 
 
-def check_anthropic_key():
-    key = os.environ.get("ANTHROPIC_API_KEY", "")
-    if key:
-        console.print(f"[green]✓[/] ANTHROPIC_API_KEY found ({key[:8]}...)")
-        return True
+PROVIDERS = {
+    "1": ("deepseek", "DEEPSEEK_API_KEY", "https://platform.deepseek.com/api_keys"),
+    "2": ("anthropic", "ANTHROPIC_API_KEY", "https://console.anthropic.com"),
+}
 
-    console.print("[yellow]![/] ANTHROPIC_API_KEY not set.")
-    console.print("Get your key from: [link]https://console.anthropic.com[/]")
-    key = Prompt.ask("  Paste your Anthropic API key (or press Enter to skip)")
+
+def check_api_key():
+    """Confirm a model provider key is available, offering to save one if not."""
+    for _, (provider, env_var, _url) in PROVIDERS.items():
+        key = os.environ.get(env_var, "")
+        if key:
+            console.print(f"[green]✓[/] {env_var} found ({key[:8]}...) — using {provider}.")
+            return True
+
+    console.print("[yellow]![/] No model API key set. You need one of:")
+    console.print("    [bold]1[/] DeepSeek  — https://platform.deepseek.com/api_keys")
+    console.print("    [bold]2[/] Anthropic — https://console.anthropic.com")
+    choice = Prompt.ask("  Which will you use?", choices=["1", "2"], default="1")
+    provider, env_var, url = PROVIDERS[choice]
+
+    console.print(f"  Get your key from: [link]{url}[/]")
+    key = Prompt.ask(f"  Paste your {provider} API key (or press Enter to skip)")
     if key:
         shell_rc = Path.home() / ".bashrc"
         with open(shell_rc, "a") as f:
-            f.write(f'\nexport ANTHROPIC_API_KEY="{key}"\n')
+            f.write(f'\nexport {env_var}="{key}"\n')
         console.print(f"[green]✓[/] Key saved to {shell_rc}. Run: [bold]source ~/.bashrc[/]")
     return bool(key)
 
@@ -31,10 +44,10 @@ def check_anthropic_key():
 def check_google_credentials():
     creds_file = Path("credentials.json")
     if creds_file.exists():
-        console.print("[green]✓[/] credentials.json found.")
+        console.print("[green]✓[/] credentials.json found — email and calendar tools enabled.")
         return True
 
-    console.print("[yellow]![/] credentials.json not found.")
+    console.print("[yellow]![/] credentials.json not found (optional — email/calendar only).")
     console.print(
         Panel(
             "[bold]How to get Google credentials:[/]\n\n"
@@ -53,18 +66,23 @@ def check_google_credentials():
 
 
 def main():
-    console.print("\n[bold cyan]Daily Activities Agent — Setup[/]\n")
+    console.print("\n[bold cyan]Personal Agent — Setup[/]\n")
 
-    ok_api = check_anthropic_key()
+    ok_api = check_api_key()
     ok_google = check_google_credentials()
 
     console.print()
-    if ok_api and ok_google:
-        console.print("[bold green]✓ Setup complete![/] Run the agent with:")
-        console.print("  [bold]python main.py[/]\n")
-        console.print("On first run the agent will open your browser to authorize Google access.")
+    if not ok_api:
+        console.print("[yellow]Set a model API key, then re-run:[/] [bold]python setup.py[/]")
+        return
+
+    console.print("[bold green]✓ Ready.[/] Talk to your agent with:")
+    console.print("  [bold]python chat.py[/]\n")
+    if ok_google:
+        console.print("Email and calendar tools are enabled — [bold]python main.py[/] runs the daily assistant.")
+        console.print("On first use the agent will open your browser to authorize Google access.")
     else:
-        console.print("[yellow]Complete the steps above, then re-run:[/] [bold]python setup.py[/]")
+        console.print("[dim]Email and calendar are optional; add credentials.json above to enable them.[/]")
 
 
 if __name__ == "__main__":

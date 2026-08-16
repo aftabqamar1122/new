@@ -1,5 +1,11 @@
-anthropic>=0.40.0
+# Chat CLI
+rich>=13.0.0
+
+# Model providers — you only need the one you use
+openai>=1.40.0        # DeepSeek (OpenAI-compatible API)
+anthropic>=0.40.0     # Claude
+
+# Optional — only needed for the email/calendar tools
 google-api-python-client>=2.100.0
 google-auth-httplib2>=0.1.0
 google-auth-oauthlib>=1.0.0
-rich>=13.0.0

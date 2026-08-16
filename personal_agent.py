@@ -1,5 +1,7 @@
 """Personal agent — a conversational assistant that remembers you.
 
+Runs on DeepSeek or Anthropic; the model backend is injected (see llm.py).
+
 Core capabilities (always available, no external accounts needed):
   - natural conversation with memory that survives restarts
   - long-term facts about you: name, work, preferences, people, projects
@@ -9,31 +11,16 @@ Optional: if Google credentials are set up (see README), email and calendar
 tools are attached automatically at startup.
 """
 
-import json
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Callable
 
-import anthropic
-
+from llm import Backend, build_backend
 from tools import memory_tools
 from tools.task_tools import add_task, list_tasks, complete_task, delete_task, update_task
 
-MODEL = "claude-sonnet-5"
-MAX_TOKENS = 4096
-
 # Turns of previous conversation reloaded at startup.
 HISTORY_WINDOW = 20
-
-GOOGLE_TOOL_NAMES = {
-    "get_emails",
-    "send_email",
-    "reply_to_email",
-    "get_calendar_events",
-    "create_calendar_event",
-    "delete_calendar_event",
-    "get_morning_brief",
-}
 
 CORE_TOOLS: list[dict] = [
     {
@@ -220,20 +207,15 @@ def _google_ready() -> bool:
 
 
 def _load_google_tools() -> tuple[list[dict], dict[str, Callable[[dict], Any]]]:
-    """Attach the Gmail/Calendar tools from agent.py, if they're usable."""
+    """Attach the Gmail/Calendar tools, if they're usable."""
     if not _google_ready():
         return [], {}
     try:
-        from agent import TOOLS as daily_tools, _execute_tool as run_daily
+        from tools import google_tools
     except Exception:
         return [], {}
 
-    schemas = [t for t in daily_tools if t["name"] in GOOGLE_TOOL_NAMES]
-    handlers = {
-        t["name"]: (lambda name: lambda i: run_daily(name, i))(t["name"])
-        for t in schemas
-    }
-    return schemas, handlers
+    return list(google_tools.SCHEMAS), dict(google_tools.HANDLERS)
 
 
 def _alternating(messages: list[dict]) -> list[dict]:
@@ -256,8 +238,14 @@ def _alternating(messages: list[dict]) -> list[dict]:
 class PersonalAgent:
     """Conversational agent with persistent memory over the local tool set."""
 
-    def __init__(self, api_key: str, agent_name: str = "Ava", user_name: str = "", resume: bool = True):
-        self.client = anthropic.Anthropic(api_key=api_key)
+    def __init__(
+        self,
+        backend: Backend | None = None,
+        agent_name: str = "Ava",
+        user_name: str = "",
+        resume: bool = True,
+    ):
+        self.backend = backend or build_backend()
         self.agent_name = agent_name
         self.user_name = user_name
 
@@ -308,39 +296,29 @@ class PersonalAgent:
         reply_parts: list[str] = []
 
         while True:
-            # Rebuilt each round-trip so a fact stored by `remember` mid-turn is
-            # already part of the profile the model sees on the next round-trip.
-            with self.client.messages.stream(
-                model=MODEL,
-                max_tokens=MAX_TOKENS,
+            # The prompt is rebuilt each round-trip so a fact stored by `remember`
+            # mid-turn is already part of the profile on the next round-trip.
+            response = self.backend.run(
                 system=self._system_prompt(),
-                tools=self.tools,
                 messages=self.history,
-            ) as stream:
-                for delta in stream.text_stream:
-                    if on_text:
-                        on_text(delta)
-                response = stream.get_final_message()
+                tools=self.tools,
+                on_text=on_text,
+            )
 
-            tool_results = []
-            for block in response.content:
-                if block.type == "text":
-                    reply_parts.append(block.text)
-                elif block.type == "tool_use":
-                    result = self._run_tool(block.name, block.input)
-                    tool_results.append({
-                        "type": "tool_result",
-                        "tool_use_id": block.id,
-                        "content": json.dumps(result, default=str),
-                    })
+            if response.text.strip():
+                reply_parts.append(response.text)
 
-            self.history.append({"role": "assistant", "content": response.content})
+            self.history.append(self.backend.assistant_message(response))
 
-            if tool_results:
-                self.history.append({"role": "user", "content": tool_results})
+            if response.tool_calls:
+                results = [
+                    (call, {"error": call.error} if call.error else self._run_tool(call.name, call.arguments))
+                    for call in response.tool_calls
+                ]
+                self.history.extend(self.backend.tool_result_messages(results))
                 continue
 
-            reply = "\n".join(p for p in reply_parts if p.strip()).strip()
+            reply = "\n".join(reply_parts).strip()
             memory_tools.log_message("assistant", reply)
             return reply
 
