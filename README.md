@@ -1,31 +1,64 @@
-# Daily Activities AI Agent
+# Personal AI Agent
 
-A personal AI assistant that manages your emails, calendar, tasks, and morning brief — all from a terminal chat interface.
+Your own AI companion in the terminal. It talks with you, remembers what you tell it between
+sessions, keeps your tasks, and — if you connect Google — handles your email and calendar too.
 
-## Features
+Two ways in:
 
-| Capability | What it does |
+| | |
 |---|---|
-| 📧 Email | Read inbox, search, send emails, reply to threads |
-| 📅 Calendar | View events, create meetings (with Google Meet), delete events |
-| ✅ Tasks | Add, list, complete, update, delete tasks with priorities & due dates |
-| 🌅 Morning Brief | Daily summary of unread emails, today's events, and pending tasks |
+| **`python chat.py`** | **Your personal agent.** Conversation with long-term memory. Needs only an Anthropic API key. |
+| `python main.py` | The daily-activities assistant: email, calendar, tasks, morning brief. Needs Google credentials. |
 
-## Prerequisites
+## Talk to your agent
 
-- Python 3.11+
-- An [Anthropic API key](https://console.anthropic.com)
-- A Google Cloud project with Gmail API + Google Calendar API enabled
-
-## Quick Start
-
-### 1. Install dependencies
+### 1. Install and run
 
 ```bash
 pip install -r requirements.txt
+export ANTHROPIC_API_KEY=your_key_here
+python chat.py
 ```
 
-### 2. Set up credentials
+That's it — no Google setup needed for the conversational agent.
+
+```
+Ava · your personal agent
+We haven't met yet. Tell me a bit about yourself and I'll remember it.
+
+You: I'm Aftab, I'm a civil engineer working on the Almeria project
+Ava  Nice to meet you, Aftab. What's the Almeria project — infrastructure, buildings?
+
+You: remind me to send the manpower report Thursday
+Ava  Added it for Thursday. Want it flagged high priority?
+```
+
+Come back tomorrow and it still knows who you are.
+
+### 2. Options
+
+```bash
+python chat.py --name Max          # name your agent something else
+python chat.py --user Aftab        # tell it what to call you
+python chat.py --fresh             # don't reload the last conversation
+python chat.py "how's my week?"    # one-shot: ask and exit
+```
+
+In-chat commands: `memories` (see everything it knows) · `new` (fresh conversation, keeps memory) ·
+`forget-all` (erase the transcript, keeps memory) · `clear` · `help` · `exit`
+
+### 3. What it remembers
+
+Facts it picks up — your name, work, preferences, people, projects — are stored in
+`~/.personal_agent/memory.db` (SQLite, on your machine only) and loaded into every conversation.
+Ask it to forget something and it will delete the entry. Run `memories` to see the whole list.
+
+Your last 20 turns are reloaded at startup, so a conversation can span days.
+
+## Email and calendar (optional)
+
+The personal agent picks up Gmail and Calendar tools automatically once Google credentials exist —
+no code changes, no flags. Until then it simply doesn't offer them.
 
 ```bash
 python setup.py
@@ -35,14 +68,24 @@ Follow the on-screen instructions to:
 - Set your `ANTHROPIC_API_KEY`
 - Download `credentials.json` from Google Cloud Console
 
-### 3. Run the agent
+On first use a browser window opens for Google OAuth2 authorization. After approving, the token is
+saved to `~/.daily_agent/token.json` — you only need to authorize once.
+
+`python main.py` runs the original task-focused assistant against the same Google setup.
+
+## Prerequisites
+
+- Python 3.11+
+- An [Anthropic API key](https://console.anthropic.com)
+- *Optional:* a Google Cloud project with Gmail API + Google Calendar API enabled
+
+## Tests
 
 ```bash
-export ANTHROPIC_API_KEY=your_key_here
-python main.py
+python test_personal_agent.py
 ```
 
-On first run, a browser window will open for Google OAuth2 authorization. After approving, the token is saved to `~/.daily_agent/token.json` — you only need to authorize once.
+No API key or network needed — the Anthropic client is stubbed.
 
 ## Google API Setup (detailed)
 
@@ -53,7 +96,7 @@ On first run, a browser window will open for Google OAuth2 authorization. After 
 5. Application type: **Desktop app** → Download JSON
 6. Save the downloaded file as `credentials.json` in this directory
 
-## Usage Examples
+## Usage Examples (`main.py`)
 
 ```
 You: Good morning
@@ -69,30 +112,32 @@ You: Show my pending tasks
 You: Mark task #2 as done
 ```
 
-## Commands
-
-| Command | Action |
-|---|---|
-| `clear` | Clear the terminal |
-| `reset` | Clear conversation history |
-| `help` | Show quick reference |
-| `exit` / `quit` | Exit the agent |
+Commands: `clear` · `reset` · `help` · `exit`
 
 ## Project Structure
 
 ```
 .
-├── main.py              # CLI entry point
-├── agent.py             # Anthropic tool-use agent loop
+├── chat.py              # Personal agent CLI  ← start here
+├── personal_agent.py    # Conversational agent: memory + tasks (+ Google if configured)
+├── main.py              # Daily-activities CLI
+├── agent.py             # Task-focused agent loop over the Google tools
 ├── tools/
+│   ├── memory_tools.py  # Long-term memory (SQLite)
+│   ├── task_tools.py    # Local task manager (SQLite)
 │   ├── email_tools.py   # Gmail API wrappers
-│   ├── calendar_tools.py # Google Calendar API wrappers
-│   └── task_tools.py    # Local SQLite task manager
+│   └── calendar_tools.py # Google Calendar API wrappers
 ├── auth/
 │   └── google_auth.py   # Google OAuth2 helper
 ├── setup.py             # First-time setup wizard
+├── test_personal_agent.py
 └── requirements.txt
 ```
 
-Tasks are stored locally in `~/.daily_agent/tasks.db` (SQLite).
-Google OAuth token is stored in `~/.daily_agent/token.json`.
+Local data, none of it leaves your machine except as context sent to the Anthropic API:
+
+| Path | Contents |
+|---|---|
+| `~/.personal_agent/memory.db` | What the agent remembers about you + your chat log |
+| `~/.daily_agent/tasks.db` | Tasks and reminders |
+| `~/.daily_agent/token.json` | Google OAuth token |
