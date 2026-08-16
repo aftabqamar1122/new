@@ -2,6 +2,12 @@
 
 A personal AI assistant that manages your emails, calendar, tasks, and morning brief — all from a terminal chat interface.
 
+> **Also in this repo:** [**NewsDesk**](NEWSDESK.md) — a dark-themed desktop app that
+> collects the day's military and financial news from BBC, Reuters, CNN, CNBC, the NYT
+> and others, ranks it by importance, summarises it with the AI provider of your choice,
+> and exports a Markdown + HTML briefing on a schedule.
+> Run it with `python newsdesk_app.py`.
+
 ## Features
 
 | Capability | What it does |

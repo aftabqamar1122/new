@@ -1,0 +1,8 @@
+# NewsDesk desktop app (see NEWSDESK.md)
+PySide6>=6.6.0
+feedparser>=6.0.10
+requests>=2.31.0
+
+# Only needed when the Anthropic provider is selected.
+# The OpenAI, Gemini and Ollama providers use plain HTTP and need nothing extra.
+anthropic>=0.40.0
