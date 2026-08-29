@@ -412,6 +412,40 @@ def test_conversation_survives_a_restart():
     assert mem.stats()["facts"] == facts_before, "clearing chat history must not drop known facts"
 
 
+
+# --- CLI error reporting -----------------------------------------------------
+
+
+def test_api_errors_are_explained_not_dumped():
+    """The first thing a new user hits is a bad key; it must read as advice."""
+    import chat
+
+    class AuthenticationError(Exception): pass
+    class APIConnectionError(Exception): pass
+    class RateLimitError(Exception): pass
+    class NotFoundError(Exception): pass
+
+    assert "DEEPSEEK_API_KEY" in chat._explain(AuthenticationError("401"), "deepseek")
+    assert "internet" in chat._explain(APIConnectionError("boom"), "deepseek")
+    assert "credit" in chat._explain(RateLimitError("429"), "deepseek")
+    assert "--model" in chat._explain(NotFoundError("no model"), "deepseek")
+    # Anything unrecognised still surfaces the real error rather than swallowing it.
+    assert "kaboom" in chat._explain(ValueError("kaboom"), "deepseek")
+
+
+def test_cli_exits_nonzero_without_a_key():
+    import os
+    import chat
+
+    saved = {v: os.environ.pop(v, None) for v in llm.ENV_KEYS.values()}
+    try:
+        assert chat.run(["hi"]) == 1, "a missing key must be an error exit, not a crash"
+    finally:
+        for var, value in saved.items():
+            if value is not None:
+                os.environ[var] = value
+
+
 def main() -> int:
     tests = [v for k, v in sorted(globals().items()) if k.startswith("test_") and callable(v)]
     failures = 0

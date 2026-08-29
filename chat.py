@@ -45,6 +45,21 @@ def _stream(text: str) -> None:
     console.print(text, end="", markup=False, highlight=False, soft_wrap=True)
 
 
+def _explain(error: Exception, provider: str) -> str:
+    """Turn a provider SDK exception into something the user can act on."""
+    name = type(error).__name__
+    key_var = ENV_KEYS.get(provider, "the API key")
+    if "Authentication" in name or "PermissionDenied" in name:
+        return f"{provider} rejected the API key. Check that {key_var} is correct and active."
+    if "Connection" in name or "APITimeout" in name:
+        return f"Couldn't reach {provider}. Check your internet connection, then try again."
+    if "RateLimit" in name:
+        return f"{provider} is rate-limiting or the account is out of credit. Wait a moment, or top up."
+    if "NotFound" in name:
+        return f"{provider} doesn't recognise that model. Try --model with a valid name."
+    return f"{name}: {error}"
+
+
 def _greeting(agent: PersonalAgent) -> str:
     counts = memory_tools.stats()
     if agent.resumed_turns:
@@ -93,7 +108,11 @@ def run(argv: list[str] | None = None) -> int:
 
     # One-shot mode: `python chat.py "how's my week looking?"`
     if args.message:
-        agent.chat(" ".join(args.message), on_text=_stream)
+        try:
+            agent.chat(" ".join(args.message), on_text=_stream)
+        except Exception as e:
+            console.print(f"[error]{_explain(e, backend.provider)}[/]")
+            return 1
         console.print()
         return 0
 
@@ -142,7 +161,7 @@ def run(argv: list[str] | None = None) -> int:
             console.print("\n[system](stopped)[/]")
             continue
         except Exception as e:
-            console.print(f"\n[error]Something went wrong:[/] {e}")
+            console.print(f"\n[error]{_explain(e, backend.provider)}[/]")
             continue
         console.print("\n")
 
