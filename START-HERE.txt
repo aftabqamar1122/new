@@ -1,0 +1,52 @@
+PERSONAL AGENT — an AI companion that remembers you
+====================================================
+
+WHAT YOU NEED
+  1. Python 3.11 or newer          https://python.org
+  2. A DeepSeek API key            https://platform.deepseek.com/api_keys
+
+
+START IT
+  Mac / Linux      open a terminal in this folder and run:   ./run.sh
+  Windows          double-click:                             run.bat
+
+  The first run installs what it needs and asks for your API key.
+  Nothing else to set up.
+
+
+TALK TO IT
+  Just type. Tell it about yourself, think out loud, ask it things.
+
+    You: I'm Aftab, a civil engineer on the Almeria project
+    You: remind me to send the manpower report Thursday
+    You: what do you know about me?
+
+  Close it, come back tomorrow, start it again — it still knows you.
+  That's the point of it.
+
+
+COMMANDS (type these in the chat)
+  memories     everything it remembers about you
+  new          fresh conversation, keeps its memory of you
+  forget-all   erase the chat log (facts about you are kept)
+  help         quick reference
+  exit         leave
+
+
+WHERE YOUR DATA LIVES
+  ~/.personal_agent/memory.db     what it remembers + your chat log
+  ~/.daily_agent/tasks.db         your tasks and reminders
+
+  Both are files on your own computer. Delete memory.db and it forgets
+  you completely. Nothing is uploaded anywhere except the text of your
+  conversation, which goes to DeepSeek to generate each reply.
+
+
+OPTIONAL EXTRAS
+  python chat.py "what's on my plate?"     ask one thing, get an answer
+  python chat.py --name Max                 give it a different name
+  python chat.py --model deepseek-reasoner  slower, better at hard problems
+  python test_personal_agent.py             check everything works (no key needed)
+
+  Email + calendar: run  python setup.py  and add Google credentials.
+  Full details in README.md
