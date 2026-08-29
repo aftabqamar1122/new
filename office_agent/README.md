@@ -155,6 +155,16 @@ exits non-zero if any check fails, so it is safe in a script or a cron job.
 python3 -m unittest discover -s tests -v     # 41 tests
 ```
 
+## Shipping it to someone else
+
+```bash
+./office_agent/packaging/build_zip.sh          # writes dist/officemind.zip
+```
+
+The zip is self-contained: the module, the tests, the sample, a `START-HERE.md`
+quickstart, and `run.sh` / `run.bat` launchers that create a local environment
+and install the three libraries on first run.
+
 ## Layout
 
 ```
@@ -169,5 +179,6 @@ office_agent/
 ├── verify.py       post-build QA on the real files
 ├── export.py       best-effort PDF via LibreOffice
 ├── cli.py          argument parsing, target selection, reporting
+├── packaging/      START-HERE.md, run.sh, run.bat, build_zip.sh
 └── SYSTEM_PROMPT.md  the agent prompt, if you would rather drive this by chat
 ```
