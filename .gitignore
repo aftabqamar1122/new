@@ -3,3 +3,6 @@ __pycache__/
 *.pyc
 credentials.json
 token.json
+
+# OfficeMind output
+output/

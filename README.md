@@ -96,3 +96,23 @@ You: Mark task #2 as done
 
 Tasks are stored locally in `~/.daily_agent/tasks.db` (SQLite).
 Google OAuth token is stored in `~/.daily_agent/token.json`.
+
+---
+
+## OfficeMind — raw notes to Word / Excel / PowerPoint
+
+A second agent lives in `office_agent/`. Paste raw notes, get finished `.docx`,
+`.xlsx` and `.pptx` files — no API key, no Office install, no cloud call.
+
+```bash
+pip install python-docx openpyxl python-pptx
+python -m office_agent -f office_agent/samples/site_report.txt -t all
+```
+
+It parses headings, bullets, key/value facts and CSV/TSV/pipe tables, then builds
+a styled Word report with a live TOC, a workbook with `SUMIF` analysis and tie-out
+checks, and a 16:9 deck with speaker notes on every slide — and verifies all three
+before reporting done. An optional DeepSeek (or any OpenAI-compatible / local)
+model can polish the wording; data never reaches it.
+
+Full documentation: [`office_agent/README.md`](office_agent/README.md).

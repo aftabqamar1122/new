@@ -1,0 +1,28 @@
+Q3 Site Progress Report
+Project: Almeria Tower
+Prepared by: A. Qamar
+Date: 15-Aug-2026
+
+EXECUTIVE SUMMARY
+- Concrete works are 12% ahead of plan
+- Manpower cost is 8% over budget, driven by overtime
+- Two long-lead items remain unconfirmed
+
+1. Manpower
+Average deployed headcount rose from 240 to 268 across the quarter.
+Overtime hours grew faster than headcount, which is where the cost overrun sits.
+
+Region, Planned, Actual, Cost
+North, 120, 138, 412000
+South, 60, 55, 168500
+East, 60, 75, 244300
+
+2. Risks
+- Rebar delivery slipping by 2 weeks
+- Crane certification expires in October
+- Night-shift permit still pending
+
+Next Steps
+- Confirm rebar PO by 5 Sep
+- Re-baseline the manpower plan
+- Raise the permit extension with the municipality
