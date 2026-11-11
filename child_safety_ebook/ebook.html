@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Keep Them Safe</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root { --navy:#0E1530; --navy2:#1D2A55; --yellow:#FFD000; --red:#FF3B3B; --light:#D9E2FF; --panel:#EEF2FF; --ink:#0E1530; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:#999; font-family:'Nunito',sans-serif; color:var(--ink); }
+  .page { width:794px; height:1123px; margin:0 auto 20px; position:relative; overflow:hidden; background:#fff; page-break-after:always; }
+  @page { size:794px 1123px; margin:0; }
+  @media print { body { background:none; } .page { margin:0; } }
+  .anton { font-family:'Anton',sans-serif; text-transform:uppercase; }
+
+  /* ---------- cover ---------- */
+  .cover { color:#fff; background:radial-gradient(circle at 70% 30%, #23305A 0%, #0E1530 60%, #070B1C 100%); }
+  .tape { position:absolute; left:-40px; right:-40px; height:44px; color:#111; font:900 18px/44px 'Nunito'; letter-spacing:4px;
+          white-space:nowrap; text-align:center; overflow:hidden; background:var(--yellow); box-shadow:0 6px 18px rgba(0,0,0,.4); }
+  .cover .t1 { top:46px; transform:rotate(-4deg); }
+  .cover .t2 { bottom:58px; transform:rotate(3deg); background:var(--red); color:#fff; letter-spacing:2px; font-size:17px; }
+  .cover .wrap { position:absolute; top:130px; left:56px; right:56px; }
+  .cover .q { font-family:'Anton',sans-serif; text-transform:uppercase; line-height:.95; font-size:104px; }
+  .y { color:var(--yellow); } .r { color:var(--red); }
+  .cover .sub { font-size:23px; font-weight:800; margin-top:18px; max-width:330px; line-height:1.35; color:var(--light); }
+  .cover .sign { position:absolute; top:330px; right:-10px; }
+  .cover .check { position:absolute; left:56px; right:56px; top:690px; background:#fff; color:var(--navy);
+                  border-radius:22px; padding:22px 26px; box-shadow:0 10px 0 var(--yellow); }
+  .cover .check h3 { font:900 20px 'Nunito'; letter-spacing:1px; color:var(--red); margin-bottom:10px; }
+  .box-list li { list-style:none; font-size:19px; font-weight:800; padding:7px 0 7px 44px; position:relative; border-top:2px dashed #E3E7F2; }
+  .box-list li:first-child { border-top:0; }
+  .box-list li::before { content:''; position:absolute; left:4px; top:7px; width:26px; height:26px; border:3px solid var(--navy); border-radius:7px; }
+
+  /* ---------- chapter pages ---------- */
+  .band { background:radial-gradient(circle at 80% 0%, #23305A, var(--navy) 70%); color:#fff; height:200px; position:relative; padding:58px 40px 0; }
+  .band .tape { top:12px; left:-20px; right:-20px; height:30px; font-size:13px; line-height:30px; transform:rotate(-1.2deg); }
+  .band .num { font-family:'Anton'; font-size:96px; line-height:1; color:var(--yellow); float:left; margin-right:20px; }
+  .band h2 { font-family:'Anton'; text-transform:uppercase; font-size:56px; line-height:1.02; letter-spacing:.5px; padding-top:6px; }
+  .band p { font-size:18px; font-weight:800; color:var(--light); margin-top:2px; }
+  .scene { margin:-34px 40px 0; height:300px; border-radius:22px; background:var(--panel); border:4px solid var(--navy); overflow:hidden; position:relative; }
+  .scene svg { display:block; }
+  .cols { display:grid; grid-template-columns:1.45fr 1fr; gap:22px; padding:26px 40px 0; }
+  .lbl { font:900 16px 'Nunito'; letter-spacing:1.5px; color:var(--red); margin-bottom:6px; }
+  .rules li { list-style:none; position:relative; padding:8px 0 8px 42px; font-size:18.5px; font-weight:800; line-height:1.32; }
+  .rules li b { color:var(--red); }
+  .rules li span.n { position:absolute; left:0; top:8px; width:30px; height:28px; border-radius:50%; background:var(--yellow);
+                     border:3px solid var(--navy); font:900 14px/22px 'Nunito'; text-align:center; }
+  .say { background:var(--yellow); border-radius:18px; padding:18px 18px; box-shadow:0 6px 0 var(--navy); }
+  .say .lbl { color:var(--navy); }
+  .say div { font-family:'Anton'; text-transform:uppercase; font-size:36px; line-height:1.05; }
+  .warn { margin-top:20px; background:var(--red); color:#fff; border-radius:18px; padding:16px 18px; font-size:17px; font-weight:800; line-height:1.35; }
+  .warn .lbl { color:var(--yellow); }
+  .tips { margin:24px 40px 0; background:var(--navy); color:#fff; border-radius:20px; padding:18px 24px; }
+  .tips .lbl { color:var(--yellow); }
+  .tips li { list-style:none; position:relative; padding:5px 0 5px 28px; font-size:17px; font-weight:700; line-height:1.35; color:#E8EDFF; }
+  .tips li::before { content:'✓'; position:absolute; left:0; top:2px; color:var(--yellow); font-weight:900; }
+  .foot { position:absolute; bottom:0; left:0; right:0; height:44px; display:flex; justify-content:space-between; align-items:center;
+          padding:0 40px; font-size:13px; font-weight:800; color:#7A84A8; border-top:3px solid var(--yellow); }
+  .foot b { background:var(--navy); color:var(--yellow); width:30px; height:30px; border-radius:50%; text-align:center; line-height:30px; }
+
+  /* ---------- intro / extra pages ---------- */
+  .pad { padding:28px 40px 0; }
+  .note { font-size:17px; font-weight:700; line-height:1.5; }
+  .steps { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:16px; }
+  .steps div { background:var(--panel); border:3px solid var(--navy); border-radius:16px; padding:12px; font-size:14.5px; font-weight:800; line-height:1.3; }
+  .steps div i { display:block; font-style:normal; font-family:'Anton'; font-size:30px; color:var(--red); }
+  .toc { display:grid; grid-template-columns:1fr 1fr; gap:10px 16px; margin-top:12px; }
+  .toc div { display:flex; align-items:center; gap:12px; background:#fff; border:3px solid var(--navy); border-radius:14px; padding:8px 12px; font-weight:900; font-size:17px; }
+  .toc div i { font-style:normal; font-family:'Anton'; font-size:26px; background:var(--navy); color:var(--yellow); width:46px; height:46px; border-radius:12px; text-align:center; line-height:46px; flex:none; }
+  .toc div small { margin-left:auto; color:#7A84A8; font-size:14px; }
+  .nums { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+  .nums div { border-radius:20px; padding:14px; text-align:center; font-weight:900; font-size:17px; letter-spacing:1px; box-shadow:0 6px 0 var(--navy); border:3px solid var(--navy); }
+  .nums div b { display:block; font-family:'Anton'; font-size:78px; line-height:1.05; letter-spacing:2px; }
+  .card { margin-top:18px; border:4px dashed var(--navy); border-radius:22px; padding:16px 22px; position:relative; }
+  .card h3 { font-family:'Anton'; font-size:30px; text-transform:uppercase; }
+  .field { display:flex; gap:10px; align-items:flex-end; font-weight:900; font-size:17px; margin-top:20px; }
+  .field span { flex:1; border-bottom:2.5px solid #9AA3C4; height:20px; }
+  .cert { margin-top:34px; border:8px solid var(--yellow); outline:4px solid var(--navy); border-radius:20px; padding:30px 30px; text-align:center; background:#FFFBE6; }
+  .cert h3 { font-family:'Anton'; font-size:54px; text-transform:uppercase; color:var(--navy); }
+  .cert p { font-weight:800; font-size:19px; line-height:1.7; margin-top:8px; }
+</style>
+</head>
+<body>
+<div id="book"></div>
+
+<script>
+/* ---------- drawing helpers ---------- */
+const NAVY='#0E1530', N2='#1D2A55', YEL='#FFD000', RED='#FF3B3B';
+const rad = a => a*Math.PI/180;
+
+// Cartoon person; (x,y) = feet. la/ra = arm angle from straight down (0) to straight up (180).
+function P(o){
+  const d = Object.assign({x:0,y:0,s:1,skin:'#C68642',top:RED,bottom:N2,hair:'#2B2118',hs:'short',adult:true,la:15,ra:15,mouth:'smile',dress:false,shades:false}, o);
+  const A=d.adult, r=A?26:20, hy=A?-185:-122, sx=A?30:21, sy=A?-145:-96, L=A?75:48, aw=A?13:10;
+  let g='';
+  if(!d.dress) g += A ? `<g fill="${d.bottom}"><rect x="-22" y="-62" width="14" height="62" rx="7"/><rect x="8" y="-62" width="14" height="62" rx="7"/></g>`
+                      : `<g fill="${d.bottom}"><rect x="-16" y="-42" width="12" height="42" rx="6"/><rect x="4" y="-42" width="12" height="42" rx="6"/></g>`;
+  if(d.hs==='long') g += `<rect x="${-r*1.1}" y="${hy-r*0.3}" width="${r*2.2}" height="${r*2}" rx="${r*0.8}" fill="${d.hair}"/>`;
+  g += A ? (d.dress ? `<path d="M-34 -152 Q0 -168 34 -152 L48 -4 Q0 4 -48 -4 Z" fill="${d.top}"/>` : `<path d="M-34 -152 Q0 -168 34 -152 L40 -56 L-40 -56 Z" fill="${d.top}"/>`)
+         : `<path d="M-24 -102 Q0 -114 24 -102 L28 -38 L-28 -38 Z" fill="${d.top}"/>`;
+  for (const [side,a] of [[-1,d.la],[1,d.ra]]) {
+    const ex = side*(sx + Math.sin(rad(a))*L), ey = sy + Math.cos(rad(a))*L;
+    g += `<path d="M${side*sx} ${sy} L${ex.toFixed(1)} ${ey.toFixed(1)}" stroke="${d.skin}" stroke-width="${aw}" stroke-linecap="round"/><circle cx="${ex.toFixed(1)}" cy="${ey.toFixed(1)}" r="${aw*0.62}" fill="${d.skin}"/>`;
+  }
+  let fr=r;
+  if(d.hs==='hijab'){ g += `<path d="M${-r*1.3} ${hy} Q${-r*1.45} ${hy+r*1.9} ${-r*0.5} ${hy+r*2.3} L${r*0.5} ${hy+r*2.3} Q${r*1.45} ${hy+r*1.9} ${r*1.3} ${hy} A${r*1.3} ${r*1.3} 0 0 0 ${-r*1.3} ${hy} Z" fill="${d.hair}"/>`; fr=r*0.88; }
+  g += `<circle cx="0" cy="${hy}" r="${fr}" fill="${d.skin}"/>`;
+  if(d.hs==='short'||d.hs==='long'||d.hs==='cap')
+    g += `<path d="M${-r} ${hy-2} Q${-r} ${hy-r*1.25} 0 ${hy-r*1.12} Q${r} ${hy-r*1.25} ${r} ${hy-2} Q${r*0.55} ${hy-r*0.62} 0 ${hy-r*0.66} Q${-r*0.55} ${hy-r*0.62} ${-r} ${hy-2} Z" fill="${d.hair}"/>`;
+  if(d.hs==='cap') g += `<path d="M${-r*1.05} ${hy-r*0.4} Q0 ${hy-r*1.7} ${r*1.05} ${hy-r*0.4} Z" fill="${N2}"/><rect x="${-r*1.05}" y="${hy-r*0.52}" width="${r*2.45}" height="${r*0.24}" rx="3" fill="${N2}"/><circle cx="0" cy="${hy-r*0.85}" r="${r*0.18}" fill="${YEL}"/>`;
+  const ey=hy+r*0.05, ex=fr*0.38, er=r*0.12;
+  g += d.shades ? `<rect x="${-fr*0.8}" y="${ey-r*0.18}" width="${fr*1.6}" height="${r*0.34}" rx="4" fill="#111"/>`
+                : `<circle cx="${-ex}" cy="${ey}" r="${er}" fill="${NAVY}"/><circle cx="${ex}" cy="${ey}" r="${er}" fill="${NAVY}"/>`;
+  const my=hy+r*0.42;
+  g += {smile:`<path d="M${-r*0.33} ${my} Q0 ${my+r*0.32} ${r*0.33} ${my}" stroke="${NAVY}" stroke-width="${A?3:2.5}" fill="none" stroke-linecap="round"/>`,
+        shout:`<ellipse cx="0" cy="${my+r*0.1}" rx="${r*0.2}" ry="${r*0.26}" fill="${NAVY}"/>`,
+        flat:`<path d="M${-r*0.25} ${my+r*0.08} L${r*0.25} ${my+r*0.08}" stroke="${NAVY}" stroke-width="2.5" stroke-linecap="round"/>`,
+        worried:`<path d="M${-r*0.28} ${my+r*0.2} Q0 ${my-r*0.05} ${r*0.28} ${my+r*0.2}" stroke="${NAVY}" stroke-width="2.5" fill="none" stroke-linecap="round"/>`}[d.mouth];
+  return `<g transform="translate(${d.x} ${d.y}) scale(${d.s})">${g}</g>`;
+}
+// Speech bubble; lines split by '|'; tail points to (tx,ty)
+function B(x,y,w,h,text,tx,ty,o={}){
+  const fill=o.fill||'#fff', col=o.col||NAVY, fs=o.fs||20, lines=text.split('|'), cx=x+w/2;
+  const bx=Math.min(Math.max(tx,x+30),x+w-30);
+  let t=lines.map((l,i)=>`<tspan x="${cx}" dy="${i?fs*1.15:0}">${l}</tspan>`).join('');
+  const ty0 = y+h/2 - (lines.length-1)*fs*0.575 + fs*0.35;
+  return `<path d="M${bx-16} ${y+h-4} L${tx} ${ty} L${bx+16} ${y+h-4} Z" fill="${fill}" stroke="${NAVY}" stroke-width="3"/>
+  <rect x="${x}" y="${y}" width="${w}" height="${h}" rx="18" fill="${fill}" stroke="${NAVY}" stroke-width="3"/>
+  <rect x="${bx-14}" y="${y+h-6}" width="28" height="6" fill="${fill}"/>
+  <text x="${cx}" y="${ty0}" text-anchor="middle" font-family="Nunito" font-weight="900" font-size="${fs}" fill="${col}">${t}</text>`;
+}
+// Label chip
+function C(x,y,text,o={}){ const w=text.length*8.2+26, bg=o.bg||N2, fg=o.fg||YEL;
+  return `<rect x="${x}" y="${y}" width="${w}" height="30" rx="10" fill="${bg}"/><text x="${x+w/2}" y="${y+20.5}" text-anchor="middle" font-family="Nunito" font-weight="900" font-size="14.5" fill="${fg}">${text}</text>`; }
+function car(x,y,c=N2,s=1){ return `<g transform="translate(${x} ${y}) scale(${s})">
+  <path d="M40 52 Q62 0 120 0 L190 0 Q232 0 252 52 Z" fill="${c}"/><rect x="0" y="48" width="280" height="82" rx="26" fill="${c}"/>
+  <path d="M70 48 Q86 14 125 14 L150 14 L150 48 Z" fill="#BFD0FF"/><path d="M160 48 L160 14 L182 14 Q212 14 228 48 Z" fill="#BFD0FF"/>
+  <rect x="250" y="70" width="22" height="12" rx="4" fill="${YEL}"/><rect x="6" y="70" width="16" height="12" rx="4" fill="${RED}"/>
+  <circle cx="64" cy="130" r="25" fill="#111"/><circle cx="64" cy="130" r="10" fill="#9AA3C4"/><circle cx="214" cy="130" r="25" fill="#111"/><circle cx="214" cy="130" r="10" fill="#9AA3C4"/></g>`; }
+const heart=(x,y,s=1,c=RED)=>`<path transform="translate(${x} ${y}) scale(${s})" d="M0 0 c-8-12 -26-4 -18 10 l18 16 l18-16 c8-14 -10-22 -18-10z" fill="${c}"/>`;
+const svg = inner => `<svg width="706" height="292" viewBox="0 0 706 292" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`;
+
+/* ---------- scenes ---------- */
+const S = {
+body: svg(`<rect y="262" width="706" height="40" fill="#DCE3F7"/>
+  ${P({x:230,y:280,adult:false,skin:'#F1C27D',top:YEL,hair:'#6B3E26',ra:165,la:12,mouth:'shout'})}
+  ${B(30,22,230,82,'NO!|That\'s my body!',215,150,{fs:24,col:RED})}
+  ${heart(360,150,1.6)}
+  ${P({x:500,y:280,skin:'#C68642',top:RED,hair:N2,hs:'hijab',dress:true,la:22,ra:22})}
+  ${B(400,18,280,74,'I believe you. Thank|you for telling me.',490,95,{fs:18})}
+  ${C(560,236,'Safe adult')}`),
+
+stranger: svg(`<rect y="250" width="706" height="50" fill="#C9CCD6"/>
+  ${car(20,118)}
+  <circle cx="190" cy="152" r="17" fill="#E0AC69"/><rect x="176" y="146" width="28" height="9" rx="3" fill="#111"/><path d="M178 140 Q190 126 204 140 Z" fill="#555"/>
+  <path d="M208 160 L292 178" stroke="#E0AC69" stroke-width="10" stroke-linecap="round"/>
+  <path d="M287 176 l-14 -9 0 18z M313 176 l14 -9 0 18z" fill="${RED}"/><circle cx="300" cy="176" r="11" fill="${YEL}"/>
+  ${B(16,16,280,80,'Want a sweet? Help me|find my lost puppy!',190,128,{fs:18})}
+  ${P({x:430,y:282,adult:false,skin:'#8D5524',top:RED,hair:'#111',hs:'long',la:18,ra:18,mouth:'flat'})}
+  ${B(338,20,210,74,'I must ask|my dad first!',425,140,{fs:19})}
+  <path d="M470 200 L540 200" stroke="${YEL}" stroke-width="10" stroke-linecap="round"/><path d="M536 186 L558 200 L536 214 Z" fill="${YEL}"/>
+  ${P({x:625,y:282,skin:'#F1C27D',top:N2,bottom:'#4A5578',hair:'#4A3222',la:20,ra:20})}`),
+
+home: svg(`<rect y="248" width="706" height="50" fill="#E8D9C4"/>
+  <rect x="30" y="36" width="150" height="150" rx="6" fill="#BFE3FF" stroke="${NAVY}" stroke-width="8"/>
+  <g stroke="${NAVY}" stroke-width="5"><line x1="67" y1="40" x2="67" y2="182"/><line x1="105" y1="40" x2="105" y2="182"/><line x1="143" y1="40" x2="143" y2="182"/></g>
+  <rect x="94" y="104" width="22" height="16" rx="3" fill="${YEL}" stroke="${NAVY}" stroke-width="3"/>
+  ${C(30,198,'Window locks')}
+  <rect x="236" y="96" width="210" height="10" rx="3" fill="${N2}"/>
+  <rect x="256" y="48" width="74" height="48" rx="6" fill="${RED}"/><path d="M286 60 h14 v10 h10 v14 h-10 v10 h-14 v-10 h-10 v-14 h10 z" transform="translate(-4 -6) scale(.8) translate(70 15)" fill="#fff"/>
+  <rect x="314" y="34" width="26" height="22" rx="7" fill="none" stroke="${YEL}" stroke-width="5"/><rect x="308" y="50" width="38" height="28" rx="5" fill="${YEL}"/>
+  <rect x="368" y="56" width="22" height="40" rx="4" fill="#fff" stroke="${NAVY}" stroke-width="3"/><rect x="366" y="48" width="26" height="10" rx="3" fill="${RED}"/>
+  <rect x="400" y="62" width="20" height="34" rx="4" fill="#fff" stroke="${NAVY}" stroke-width="3"/><rect x="398" y="54" width="24" height="10" rx="3" fill="${N2}"/>
+  ${C(236,114,'Medicines up high & locked')}
+  ${P({x:340,y:280,adult:false,skin:'#C68642',top:YEL,hair:'#2B2118',la:55,ra:55})}
+  <rect x="268" y="244" width="30" height="30" rx="4" fill="${RED}"/><rect x="384" y="250" width="26" height="26" rx="4" fill="#4FA3FF"/><rect x="396" y="226" width="24" height="24" rx="4" fill="${YEL}" stroke="${NAVY}" stroke-width="2"/>
+  <rect x="520" y="70" width="150" height="180" rx="8" fill="${YEL}" stroke="${NAVY}" stroke-width="5"/>
+  <g stroke="${NAVY}" stroke-width="4"><line x1="520" y1="130" x2="670" y2="130"/><line x1="520" y1="190" x2="670" y2="190"/></g>
+  <g fill="${NAVY}"><rect x="580" y="96" width="30" height="7" rx="3"/><rect x="580" y="156" width="30" height="7" rx="3"/><rect x="580" y="216" width="30" height="7" rx="3"/></g>
+  <rect x="540" y="18" width="110" height="52" rx="6" fill="${NAVY}"/><rect x="547" y="24" width="96" height="40" rx="3" fill="#4FA3FF"/>
+  <path d="M650 30 L700 30" stroke="${RED}" stroke-width="5"/><rect x="694" y="20" width="10" height="20" fill="#7A84A8"/>
+  <path d="M670 100 L700 100" stroke="${RED}" stroke-width="5"/><rect x="694" y="90" width="10" height="20" fill="#7A84A8"/>
+  ${C(500,256,'Anchor furniture & TVs')}`),
+
+water: svg(`<rect y="0" width="706" height="190" fill="#DFF2FF"/>
+  <rect y="190" width="706" height="16" fill="#E9EEF8"/><rect y="206" width="706" height="100" fill="#4FA3FF"/>
+  ${P({x:250,y:345,adult:false,skin:'#F1C27D',top:RED,hair:'#7A4A2A',la:120,ra:120})}
+  <rect y="240" width="706" height="90" fill="#3B8EEA" opacity=".93"/>
+  <ellipse cx="250" cy="242" rx="50" ry="14" fill="none" stroke="${YEL}" stroke-width="15"/>
+  <g fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".8"><path d="M30 246 q20-12 40 0 t40 0"/><path d="M420 262 q20-12 40 0 t40 0"/><path d="M560 230 q20-12 40 0 t40 0"/></g>
+  ${P({x:420,y:200,s:.85,skin:'#8D5524',top:N2,bottom:'#4A5578',hair:'#111',la:15,ra:35})}
+  <rect x="406" y="86" width="28" height="16" rx="4" fill="${YEL}"/><text x="420" y="97.5" text-anchor="middle" font-family="Nunito" font-weight="900" font-size="8" fill="${NAVY}">WATCHER</text>
+  <rect x="600" y="40" width="34" height="58" rx="7" fill="${N2}"/><rect x="605" y="48" width="24" height="40" rx="3" fill="#BFD0FF"/>
+  <circle cx="617" cy="69" r="36" fill="none" stroke="${RED}" stroke-width="8"/><line x1="592" y1="44" x2="642" y2="94" stroke="${RED}" stroke-width="8"/>
+  ${C(486,118,'Phone away, eyes on')}
+  ${B(18,18,240,74,'Eyes on you,|every second.',398,58,{fs:19})}`),
+
+hotcar: svg(`<rect width="706" height="292" fill="#FFF1C4"/><rect y="244" width="706" height="60" fill="#8A8FA3"/>
+  <circle cx="640" cy="52" r="38" fill="${YEL}"/><g stroke="${YEL}" stroke-width="7" stroke-linecap="round"><line x1="640" y1="0" x2="640" y2="6"/><line x1="586" y1="52" x2="580" y2="52"/><line x1="602" y1="14" x2="596" y2="8"/><line x1="602" y1="90" x2="596" y2="96"/></g>
+  <rect x="40" y="40" width="26" height="170" rx="13" fill="#fff" stroke="${NAVY}" stroke-width="4"/><rect x="47" y="64" width="12" height="140" rx="6" fill="${RED}"/><circle cx="53" cy="214" r="24" fill="${RED}" stroke="${NAVY}" stroke-width="4"/>
+  ${car(120,114,RED)}
+  <rect x="290" y="132" width="40" height="30" rx="6" fill="${N2}"/>
+  <g fill="none" stroke="${RED}" stroke-width="5" stroke-linecap="round"><path d="M180 96 q8-12 0-24 t0-24"/><path d="M250 96 q8-12 0-24 t0-24"/><path d="M320 96 q8-12 0-24 t0-24"/></g>
+  ${P({x:500,y:282,skin:'#F1C27D',top:N2,hair:'#1B1B1B',hs:'hijab',dress:true,la:78,ra:20})}
+  ${B(470,104,206,74,'Look before|you lock!',520,108,{fs:20,col:RED})}
+  ${C(100,256,'Never leave a child in a car. Not even for 1 minute.',{bg:RED,fg:'#fff'})}`),
+
+road: svg(`<rect width="706" height="180" fill="#E3F1FF"/><rect y="164" width="706" height="20" fill="#C9CCD6"/>
+  <rect y="184" width="706" height="120" fill="#4A4E69"/>
+  <g fill="#fff">${[0,1,2,3,4,5].map(i=>`<rect x="${250+i*40}" y="190" width="24" height="100" rx="3"/>`).join('')}</g>
+  ${car(-110,150,N2,.9)}
+  <rect x="590" y="40" width="10" height="140" fill="#7A84A8"/><rect x="568" y="10" width="54" height="104" rx="10" fill="${NAVY}"/>
+  <circle cx="595" cy="36" r="17" fill="#55303A"/><circle cx="595" cy="86" r="19" fill="#2ECC71"/>
+  <path d="M595 74 a4 4 0 1 0 0.1 0 M591 81 h8 l1 12 h-3 l-1 9 h-3 l-1-9 h-3z" fill="#fff"/>
+  ${P({x:330,y:276,skin:'#C68642',top:RED,bottom:N2,hair:'#2B2118',la:15,ra:25})}
+  ${P({x:458,y:276,adult:false,skin:'#C68642',top:YEL,hair:'#2B2118',la:80,ra:15})}
+  ${B(110,16,250,74,'Stop, look,|listen, think!',300,80,{fs:20})}
+  ${C(500,130,'Cross at the green man')}`),
+
+lost: svg(`<rect y="246" width="706" height="60" fill="#E5E9F5"/>
+  ${[[10,RED],[245,N2],[480,YEL]].map(([x,c])=>`<rect x="${x}" y="40" width="216" height="180" fill="#fff" stroke="${NAVY}" stroke-width="4"/>
+     <g>${[0,1,2,3,4,5].map(i=>`<rect x="${x+i*36}" y="40" width="36" height="34" fill="${i%2?'#fff':c}" stroke="${NAVY}" stroke-width="2"/>`).join('')}</g>
+     <rect x="${x+20}" y="96" width="76" height="124" fill="#BFD0FF"/><rect x="${x+120}" y="96" width="76" height="70" fill="#BFD0FF"/>`).join('')}
+  ${P({x:330,y:282,adult:false,skin:'#F1C27D',top:RED,hair:'#2B2118',la:15,ra:15,mouth:'flat'})}
+  ${P({x:520,y:282,skin:'#8D5524',top:N2,bottom:N2,hair:'#111',hs:'cap',la:15,ra:55})}
+  <rect x="506" y="132" width="16" height="12" rx="2" fill="${YEL}"/>
+  ${B(40,40,300,84,'I\'m lost. Please call my|mum: 05X XXX XXXX',320,150,{fs:18})}
+  ${C(500,256,'Shop staff / security')}
+  ${C(30,256,'Stand still like a tree')}`),
+
+online: svg(`<rect y="262" width="706" height="40" fill="#DCE3F7"/>
+  <rect x="30" y="14" width="270" height="266" rx="22" fill="${NAVY}"/><rect x="44" y="32" width="242" height="232" rx="10" fill="#fff"/>
+  <rect x="54" y="42" width="222" height="26" rx="6" fill="#E8EDFF"/><circle cx="68" cy="55" r="8" fill="#9AA3C4"/><text x="82" y="60" font-family="Nunito" font-weight="900" font-size="13" fill="${NAVY}">GameBuddy_99</text>
+  <rect x="54" y="78" width="150" height="30" rx="12" fill="#E8EDFF"/><text x="66" y="98" font-family="Nunito" font-weight="800" font-size="13" fill="${NAVY}">Hi! I'm 9 too :)</text>
+  <rect x="54" y="116" width="196" height="30" rx="12" fill="#E8EDFF"/><text x="66" y="136" font-family="Nunito" font-weight="800" font-size="13" fill="${NAVY}">What school do you go to?</text>
+  <rect x="54" y="154" width="222" height="50" rx="12" fill="#FFE3E3" stroke="${RED}" stroke-width="3"/>
+  <text x="66" y="174" font-family="Nunito" font-weight="900" font-size="13" fill="${RED}">Send me a photo. Don't</text><text x="66" y="192" font-family="Nunito" font-weight="900" font-size="13" fill="${RED}">tell your mum, OK?</text>
+  <path d="M232 216 L262 262 L202 262 Z" fill="${YEL}" stroke="${NAVY}" stroke-width="3" stroke-linejoin="round"/><text x="232" y="256" text-anchor="middle" font-family="Anton" font-size="26" fill="${NAVY}">!</text>
+  ${P({x:440,y:280,adult:false,skin:'#E0AC69',top:YEL,hair:'#3B2416',hs:'long',la:15,ra:55})}
+  <rect x="470" y="190" width="30" height="40" rx="5" fill="${NAVY}" transform="rotate(-20 485 210)"/>
+  ${P({x:600,y:280,skin:'#C68642',top:RED,hair:N2,hs:'hijab',dress:true,la:30,ra:15})}
+  ${B(340,20,230,76,'Mum, look at|this message!',435,140,{fs:19})}`),
+
+fire: svg(`<rect width="706" height="292" fill="#E3F1FF"/><rect y="250" width="706" height="50" fill="#9ED89A"/>
+  <path d="M30 120 L170 30 L310 120 Z" fill="${NAVY}"/><rect x="50" y="118" width="240" height="140" fill="#FFE7C2" stroke="${NAVY}" stroke-width="5"/>
+  <rect x="150" y="186" width="44" height="72" fill="${N2}"/><rect x="72" y="146" width="56" height="48" fill="#FFB199" stroke="${NAVY}" stroke-width="4"/>
+  <path d="M100 194 q-22-22 -6-44 q2 16 12 12 q-4-20 12-32 q-2 22 10 30 q10 18 -6 34 z" fill="${RED}"/><path d="M104 194 q-10-12 0-24 q4 10 10 6 q4 10 -4 18 z" fill="${YEL}"/>
+  <rect x="214" y="146" width="56" height="48" fill="#BFD0FF" stroke="${NAVY}" stroke-width="4"/>
+  <g fill="#8A8FA3" opacity=".85"><circle cx="110" cy="112" r="22"/><circle cx="136" cy="94" r="26"/><circle cx="170" cy="74" r="20"/><circle cx="196" cy="56" r="16"/></g>
+  ${P({x:440,y:278,skin:'#F1C27D',top:N2,bottom:'#4A5578',hair:'#4A3222',la:15,ra:25})}
+  ${P({x:568,y:278,adult:false,skin:'#F1C27D',top:RED,hair:'#4A3222',hs:'long',la:80,ra:15})}
+  <rect x="650" y="70" width="10" height="196" fill="#7A84A8"/><rect x="600" y="40" width="104" height="60" rx="10" fill="${YEL}" stroke="${NAVY}" stroke-width="4"/>
+  <text x="652" y="64" text-anchor="middle" font-family="Nunito" font-weight="900" font-size="14" fill="${NAVY}">MEETING</text><text x="652" y="84" text-anchor="middle" font-family="Nunito" font-weight="900" font-size="14" fill="${NAVY}">POINT</text>
+  ${B(330,14,240,74,'Get out, stay out,|call 997!',440,90,{fs:19})}
+  ${C(30,262,'Get low under smoke',{bg:RED,fg:'#fff'})}`)
+};
+
+/* ---------- chapter content ---------- */
+const CH = [
+ {t:'Body Safety', s:'My body belongs to me', scene:'body',
+  rules:['My <b>private parts</b> are the parts my swimsuit covers.',
+         'No one may touch them or ask to see them. Only a doctor or my parent may help, to keep me <b>clean or healthy</b>.',
+         'If someone tries, I say <b>NO</b>, get away and <b>TELL</b> a grown-up I trust.',
+         '<b>Secrets</b> about touching are never OK. Surprises, like a gift, are fine because everyone finds out.'],
+  say:'No! Go! Tell!',
+  warn:'Harm usually comes from someone the child already knows, not a stranger. Teach the rule for <u>everyone</u>.',
+  tips:['Use the correct names for body parts. It helps your child tell you clearly.',
+        'Never force hugs or kisses, even with family. Let your child choose a wave or a high-five.',
+        'If your child tells you something, stay calm and say: "I believe you. It is not your fault."']},
+ {t:'Tricky People', s:'Safe adults, code words and saying no', scene:'stranger',
+  rules:['I never go anywhere with anyone <b>without asking my parent first</b>, even if I know them.',
+         'Grown-ups should ask other grown-ups for help, not kids. If they ask me, I say <b>"I must ask my mum or dad."</b>',
+         'If someone grabs me, I yell <b>"This is NOT my mum/dad!"</b>, kick and run.',
+         'Our family has a <b>secret code word</b>. If a person picking me up does not know it, I do not go.'],
+  say:'Check first, every time!',
+  warn:'Tricky people rarely look scary. They offer sweets, a puppy, a game, or say "Your mum sent me".',
+  tips:['Choose a family code word together and practise it.',
+        'Help your child name 3 to 5 "safe adults" they can always go to.',
+        'Role-play: "A lady says she lost her kitten and needs help. What do you do?"']},
+ {t:'Home Safety', s:'Medicines, windows, furniture and the kitchen', scene:'home',
+  rules:['Medicines and cleaning bottles are <b>not sweets or drinks</b>. I never touch them.',
+         'I never climb on furniture, shelves, windows or <b>balcony railings</b>.',
+         'I stay away from the <b>stove, kettle, iron</b> and hot drinks.',
+         'I never put fingers or toys into <b>electric sockets</b>.'],
+  say:'Not food? Not for my mouth!',
+  warn:'A chair, toy box or AC unit near a window or balcony becomes a ladder. Clear the area.',
+  tips:['Store medicines, detergent pods and chemicals up high and locked, in their original bottles.',
+        'Fit window locks or restrictors and keep furniture away from balcony railings.',
+        'Anchor TVs, wardrobes and drawers to the wall. Use socket covers. Turn pot handles inward.']},
+ {t:'Water Safety', s:'Pools, beaches, baths and buckets', scene:'water',
+  rules:['I only go near water when <b>a grown-up is watching</b> me.',
+         'I never go in the pool, sea or bath <b>alone</b>.',
+         'I learn to swim, and I still wear a <b>life jacket</b> on boats.',
+         'If a friend is in trouble, I <b>shout for a grown-up</b> and throw something that floats. I do not jump in.'],
+  say:'Grown-up first, then water!',
+  warn:'Drowning is fast and silent. There is often no splashing or shouting. Never look away.',
+  tips:['Choose one "Water Watcher" who puts the phone away. Swap every 15 minutes.',
+        'Stay within arm\'s reach of young children and weak swimmers, even with armbands.',
+        'Fence pools, cover water tanks and empty buckets and baths right after use. Learn child CPR.']},
+ {t:'Hot Car Safety', s:'Critical in the UAE heat', scene:'hotcar',
+  rules:['A car is <b>not a playground</b>. I never play in a parked car.',
+         'I always get out of the car <b>with my grown-up</b>.',
+         'If I am ever stuck in a car, I <b>honk the horn</b> and wave to get help.',
+         'I never hide in the car or the boot.'],
+  say:'Honk, honk, help!',
+  warn:'A parked car heats up very fast, even with the windows slightly open. In UAE summer it can become deadly in minutes.',
+  tips:['Never leave a child in a car, not even "for one minute".',
+        'Look before you lock: put your phone, bag or wallet on the back seat.',
+        'Keep the car locked at home and keys out of reach. If you see a child alone in a car, call 999.']},
+ {t:'Road & Car Safety', s:'Crossing, car parks and car seats', scene:'road',
+  rules:['I <b>hold a grown-up\'s hand</b> near roads and in car parks.',
+         'Before crossing I <b>Stop, Look, Listen and Think</b>.',
+         'I cross at a <b>zebra crossing</b> or when the <b>green man</b> shows.',
+         'I always sit in my <b>car seat</b> or wear my seatbelt, and get out on the pavement side.'],
+  say:'Stop, look, listen, think!',
+  warn:'In car parks, reversing drivers often cannot see small children behind the car.',
+  tips:['Use the right car seat for your child\'s age, height and weight. Check current UAE traffic rules.',
+        'Keep children under 13 in the back seat.',
+        'Be the role model: always cross properly yourself, even when you are in a hurry.']},
+ {t:'If I Get Lost', s:'Malls, parks, beaches and events', scene:'lost',
+  rules:['If I lose my grown-up, I <b>stop and stand still</b> like a tree.',
+         'I ask a <b>mum with children</b>, a shop worker or a security guard for help.',
+         'I know my parent\'s <b>phone number by heart</b>.',
+         'I never leave the place with anyone, <b>even if they say they will help</b>.'],
+  say:'Stand still like a tree!',
+  warn:'Busy places with exits everywhere: malls, beaches, parks, events. Plan before you go in.',
+  tips:['Take a photo of your child on arrival so you can show today\'s clothes.',
+        'Write your phone number on a wristband or inside your child\'s clothes.',
+        'Agree a meeting point when you arrive. Turn your number into a song to help them learn it.']},
+ {t:'Online Safety', s:'Games, videos, chats and photos', scene:'online',
+  rules:['I never share my <b>name, school, address or photos</b> online.',
+         'People online may <b>not be who they say</b> they are.',
+         'If something makes me feel scared, sad or weird, I <b>stop and tell</b> a grown-up.',
+         'I <b>never meet</b> someone I only know from online.'],
+  say:'Stop, block, tell!',
+  warn:'Chat in games and video apps lets strangers message children directly.',
+  tips:['Keep devices in shared family rooms, and out of bedrooms at night.',
+        'Turn on parental controls. Switch off chat and location for young children.',
+        'Check age ratings: many social media apps are 13+. Ask about their online life every day.']},
+ {t:'Fire & Emergencies', s:'Smoke, fire and calling for help', scene:'fire',
+  rules:['Matches and lighters are <b>tools for grown-ups only</b>.',
+         'If the smoke alarm beeps, I <b>get out fast</b> and never stop for toys.',
+         'If there is smoke, I <b>get low</b> and crawl. I never hide under beds or in cupboards.',
+         'If my clothes catch fire: <b>Stop, Drop and Roll</b>.'],
+  say:'Get out, stay out!',
+  warn:'Frightened children often hide during a fire. Teach them firefighters are friends, even in a mask.',
+  tips:['Fit smoke alarms and test them every month.',
+        'Plan two ways out of every room and an outside meeting point. Practise twice a year.',
+        'Teach your child to call 999 or 997 and say their name, address and what happened.']}
+];
+
+/* ---------- pages ---------- */
+const foot = n => `<div class="foot"><span>KEEP THEM SAFE &middot; The Children's Safety Handbook</span><b>${n}</b></div>`;
+const band = (num,title,sub,tape) => `<div class="band"><div class="tape">${(tape+' &#9888; ').repeat(6)}</div><div class="num">${num}</div><h2>${title}</h2><p>${sub}</p></div>`;
+
+const cover = `<div class="page cover">
+  <div class="tape t1">&#9888; PARENT ALERT &#9888; PARENT ALERT &#9888; PARENT ALERT &#9888; PARENT ALERT &#9888;</div>
+  <div class="wrap"><div class="q">Is your<br><span class="y">child</span><br>really<br><span class="r">safe?</span></div>
+  <p class="sub">9 everyday dangers parents miss, and the simple rules that keep kids safe.</p></div>
+  <svg class="sign" width="400" height="360" viewBox="0 0 400 360"><path d="M200 14 Q214 14 222 28 L388 318 Q396 334 380 342 L20 342 Q4 334 12 318 L178 28 Q186 14 200 14 Z" fill="${YEL}" stroke="${NAVY}" stroke-width="6"/>
+  <path d="M200 50 L356 318 L44 318 Z" fill="none" stroke="${NAVY}" stroke-width="10" stroke-linejoin="round"/>
+  <circle cx="170" cy="150" r="20" fill="${NAVY}"/><path d="M150 178 Q170 168 190 178 L196 250 L144 250 Z" fill="${NAVY}"/>
+  <rect x="152" y="246" width="14" height="52" rx="7" fill="${NAVY}"/><rect x="174" y="246" width="14" height="52" rx="7" fill="${NAVY}"/>
+  <path d="M190 190 Q210 214 226 226" stroke="${NAVY}" stroke-width="12" stroke-linecap="round" fill="none"/>
+  <circle cx="240" cy="210" r="15" fill="${RED}"/><path d="M224 232 Q240 224 256 232 L260 278 L220 278 Z" fill="${RED}"/>
+  <rect x="228" y="274" width="11" height="26" rx="5" fill="${RED}"/><rect x="243" y="274" width="11" height="26" rx="5" fill="${RED}"/></svg>
+  <div class="check"><h3>TAKE THE 10-SECOND TEST. CAN YOUR CHILD...</h3><ul class="box-list">
+   <li>Say your phone number by heart?</li><li>Tell you what to do if they get lost in a mall?</li>
+   <li>Say NO to a "safe" grown-up asking for a secret?</li><li>Explain why they never play near water alone?</li></ul></div>
+  <div class="tape t2">IF YOU TICKED FEWER THAN 4, READ THIS TONIGHT &bull; AGES 4&ndash;10</div></div>`;
+
+const intro = `<div class="page">${band('!','Dear Parent','Read this first','HOW TO USE THIS BOOK')}
+  <div class="pad"><p class="note">Every day, parents share short safety videos online: a child who walks off with a "friendly" stranger, a toddler near a pool, a phone left in the back seat. This book turns the most-shared lessons into <b style="color:${RED}">simple rules your child can remember</b>, with pictures to talk about together.</p>
+  <div class="steps"><div><i>1</i>Read one chapter a day with your child.</div><div><i>2</i>Look at the picture. Ask: "What is happening here?"</div><div><i>3</i>Say the yellow rhyme together until they know it.</div><div><i>4</i>Practise with role-play, then do the parent tips.</div></div>
+  <div class="lbl" style="margin-top:22px">INSIDE THIS BOOK</div>
+  <div class="toc">${CH.map((c,i)=>`<div><i>${i+1}</i>${c.t}<small>p.${i+3}</small></div>`).join('')}
+   <div><i style="background:${RED};color:#fff">SOS</i>Emergency Numbers<small>p.12</small></div></div>
+  <div class="warn" style="margin-top:20px;font-size:16px"><div class="lbl">A CALM VOICE WORKS BEST</div>Keep it light and positive. The goal is a confident child, not a frightened one. Praise every right answer.</div></div>${foot(2)}</div>`;
+
+const chapter = (c,i) => `<div class="page">${band(String(i+1).padStart(2,'0'),c.t,c.s,'CHAPTER '+(i+1)+' &middot; '+c.t.toUpperCase())}
+  <div class="scene">${S[c.scene]}</div>
+  <div class="cols"><div><div class="lbl">TEACH YOUR CHILD</div><ul class="rules">${c.rules.map((r,k)=>`<li><span class="n">${k+1}</span>${r}</li>`).join('')}</ul></div>
+  <div><div class="say"><div class="lbl">SAY IT TOGETHER</div><div>${c.say}</div></div><div class="warn"><div class="lbl">&#9888; WATCH OUT</div>${c.warn}</div></div></div>
+  <div class="tips"><div class="lbl">PARENT TIPS</div><ul>${c.tips.map(t=>`<li>${t}</li>`).join('')}</ul></div>${foot(i+3)}</div>`;
+
+const sos = `<div class="page">${band('SOS','Emergency Numbers','United Arab Emirates','LEARN THESE NUMBERS')}
+  <div class="pad"><div class="nums">
+   <div style="background:${N2};color:#fff">POLICE<b class="y">999</b></div>
+   <div style="background:${RED};color:#fff">AMBULANCE<b>998</b></div>
+   <div style="background:${YEL}">FIRE<b>997</b></div></div>
+  <div class="cols" style="padding:22px 0 0;grid-template-columns:1fr 1fr">
+   <div><div class="lbl">WHEN YOU CALL, SAY:</div><ul class="rules">
+    <li><span class="n">1</span>My name is ...</li><li><span class="n">2</span>I am at ... (address or place)</li>
+    <li><span class="n">3</span>What happened ...</li><li><span class="n">4</span>Stay on the phone until they say goodbye.</li></ul></div>
+   <div class="say"><div class="lbl">PRACTISE IT</div><div style="font-size:26px">Play "pretend call" with a toy phone. Never call 999 for fun.</div></div></div>
+  <div class="card"><h3>&#9986; Our Family Safety Card</h3><p style="font-weight:800;font-size:14px;color:#7A84A8">Fill in, cut out and stick on the fridge or in your child's school bag.</p>
+   ${["Child's name","Parent's name & phone","Second safe adult & phone","Home area / address","Our meeting point","Our code word (keep secret!)"].map(f=>`<div class="field">${f}:<span></span></div>`).join('')}</div>
+  </div>${foot(12)}</div>`;
+
+const pledge = `<div class="page">${band('&#10003;','Check & Promise','For parents and children','MONTHLY SAFETY CHECK')}
+  <div class="pad"><div class="lbl">PARENT CHECKLIST (EVERY MONTH)</div><ul class="box-list" style="columns:2;column-gap:24px">
+   ${['Smoke alarms tested','Medicines & chemicals locked','Furniture & TVs anchored','Windows & balcony secured','Pool / water access blocked','Car locked, keys away','Code word still secret','Phone number practised','Parental controls checked','Fire escape plan practised'].map(x=>`<li style="font-size:18.5px;padding:11px 0 11px 44px;break-inside:avoid">${x}</li>`).join('')}</ul>
+  <div class="cert"><svg width="300" height="60" viewBox="0 0 200 40">${[20,60,100,140,180].map(x=>`<path transform="translate(${x} 20) scale(${x===100?1.2:.9})" d="M0 -16 l5 10 11 2 -8 8 2 11 -10-5 -10 5 2-11 -8-8 11-2z" fill="${YEL}" stroke="${NAVY}" stroke-width="2"/>`).join('')}</svg>
+   <h3>I am a Safety Superstar!</h3>
+   <p>I know my body belongs to me. I check first before I go anywhere.<br>I stay near a grown-up at the water. I stand still if I get lost.<br>I tell a grown-up when something feels wrong.</p>
+   <div class="field" style="justify-content:center;margin-top:18px">Name:<span style="max-width:260px"></span>Date:<span style="max-width:140px"></span></div></div></div>${foot(13)}</div>`;
+
+const back = `<div class="page cover" style="display:flex;flex-direction:column;justify-content:center;padding:0 60px">
+  <div class="tape t1">&#9888; SHARE THIS BOOK &#9888; SHARE THIS BOOK &#9888; SHARE THIS BOOK &#9888;</div>
+  <div class="q" style="font-family:Anton;text-transform:uppercase;font-size:84px;line-height:1">Danger takes<br><span class="r">seconds.</span><br>Teaching takes<br><span class="y">minutes.</span></div>
+  <p style="font-size:22px;font-weight:800;color:${'#D9E2FF'};margin-top:24px;line-height:1.45">Send this book to one parent today.<br>It could be the lesson that keeps a child safe.</p>
+  <p style="font-size:13px;color:#9AA3C4;margin-top:40px;line-height:1.5;max-width:560px">This handbook gives general safety guidance for families. It does not replace advice from doctors, police, schools or child-protection professionals. In an emergency in the UAE, call 999.</p>
+  <div class="tape t2">KEEP THEM SAFE &bull; THE CHILDREN'S SAFETY HANDBOOK &bull; AGES 4&ndash;10</div></div>`;
+
+document.getElementById('book').innerHTML = cover + intro + CH.map(chapter).join('') + sos + pledge + back;
+</script>
+</body>
+</html>
