@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Keep Them Safe</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@600;800;900&display=swap" rel="stylesheet">
+<style>
+  :root { --red:#E63946; --yellow:#FFC93C; --navy:#1D3557; --sky:#A8DADC; --cream:#FFF8EC; --green:#2A9D8F; --orange:#F4A261; --pink:#FF8FAB; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:#ddd; font-family:'Nunito',sans-serif; }
+  .page { width:794px; height:1123px; margin:0 auto; position:relative; overflow:hidden;
+          background:radial-gradient(circle at 50% 55%, #FFFFFF 0%, var(--cream) 45%, #FFE9C7 100%); }
+  .alert { background:var(--red); color:#fff; text-align:center; padding:16px 20px; font-weight:900;
+           letter-spacing:3px; font-size:20px; text-transform:uppercase; }
+  .alert span { background:var(--yellow); color:var(--navy); padding:3px 10px; border-radius:6px; margin-right:10px; }
+  .stripe { height:14px; background:repeating-linear-gradient(-45deg,var(--yellow) 0 22px,var(--navy) 22px 44px); }
+  .head { text-align:center; padding:34px 40px 0; }
+  .kicker { display:inline-block; background:var(--navy); color:#fff; font-weight:800; font-size:17px;
+            padding:7px 18px; border-radius:30px; letter-spacing:1px; }
+  h1 { font-family:'Baloo 2',sans-serif; font-weight:800; line-height:.9; margin-top:16px; font-size:118px; color:var(--navy); }
+  h1 .them { color:var(--red); }
+  h1 .safe { display:block; font-size:132px; background:linear-gradient(90deg,var(--green),#3A86FF,#8338EC,var(--pink));
+             -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .sub { font-size:23px; font-weight:800; color:var(--navy); margin-top:10px; }
+  .art { display:block; margin:6px auto 0; }
+  .topics { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; padding:0 50px; margin-top:-6px; }
+  .chip { font-weight:900; font-size:16px; color:#fff; padding:8px 16px; border-radius:24px; box-shadow:0 3px 0 rgba(0,0,0,.18); }
+  .urgent { margin:26px 56px 0; background:#fff; border:4px solid var(--red); border-radius:22px; padding:16px 22px;
+            display:flex; align-items:center; gap:18px; box-shadow:0 8px 0 var(--red); }
+  .urgent .icon { flex:none; width:62px; height:62px; border-radius:50%; background:var(--red); color:#fff;
+                  font:800 44px/62px 'Baloo 2'; text-align:center; }
+  .urgent p { font-size:20px; font-weight:800; color:var(--navy); line-height:1.3; }
+  .urgent b { color:var(--red); }
+  .foot { position:absolute; bottom:0; left:0; right:0; background:var(--navy); color:#fff; display:flex;
+          justify-content:space-between; align-items:center; padding:16px 40px; font-weight:800; font-size:16px; }
+  .foot .age { background:var(--yellow); color:var(--navy); padding:6px 14px; border-radius:10px; font-weight:900; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="alert"><span>!</span>Every parent must read this</div>
+  <div class="stripe"></div>
+
+  <div class="head">
+    <div class="kicker">THE CHILDREN'S SAFETY HANDBOOK</div>
+    <h1>Keep <span class="them">Them</span><span class="safe">SAFE!</span></h1>
+    <p class="sub">Life-saving rules from the safety reels every parent is sharing</p>
+  </div>
+
+  <!-- Illustration: parent and two children under a protective shield -->
+  <svg class="art" width="520" height="400" viewBox="0 0 520 400" role="img" aria-label="A parent holding hands with two children inside a protective shield">
+    <defs>
+      <linearGradient id="sh" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3A86FF"/><stop offset="1" stop-color="#2A9D8F"/></linearGradient>
+    </defs>
+    <!-- sun and clouds -->
+    <circle cx="455" cy="62" r="34" fill="#FFC93C"/>
+    <g stroke="#FFC93C" stroke-width="6" stroke-linecap="round">
+      <line x1="455" y1="10" x2="455" y2="0"/><line x1="500" y1="62" x2="512" y2="62"/><line x1="487" y1="30" x2="496" y2="21"/><line x1="487" y1="94" x2="496" y2="103"/>
+    </g>
+    <g fill="#fff"><circle cx="60" cy="70" r="20"/><circle cx="85" cy="60" r="26"/><circle cx="112" cy="72" r="18"/><rect x="60" y="72" width="54" height="18"/></g>
+    <!-- shield -->
+    <path d="M260 22 L440 80 Q440 290 260 385 Q80 290 80 80 Z" fill="url(#sh)"/>
+    <path d="M260 44 L420 95 Q418 278 260 362 Q102 278 100 95 Z" fill="#E8F7F6"/>
+    <!-- ground -->
+    <ellipse cx="260" cy="338" rx="130" ry="14" fill="#BDE7C8"/>
+    <!-- parent -->
+    <g>
+      <rect x="236" y="270" width="16" height="68" rx="8" fill="#1D3557"/><rect x="262" y="270" width="16" height="68" rx="8" fill="#1D3557"/>
+      <path d="M222 180 Q257 160 292 180 L300 282 L214 282 Z" fill="#E63946"/>
+      <circle cx="257" cy="140" r="30" fill="#C68642"/>
+      <path d="M227 136 Q230 100 257 104 Q286 100 288 136 Q276 118 257 120 Q238 118 227 136 Z" fill="#2B2118"/>
+      <circle cx="247" cy="142" r="3.5" fill="#1D3557"/><circle cx="267" cy="142" r="3.5" fill="#1D3557"/>
+      <path d="M246 153 Q257 162 268 153" stroke="#1D3557" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <!-- arms -->
+      <path d="M222 190 Q196 230 182 250" stroke="#C68642" stroke-width="15" stroke-linecap="round" fill="none"/>
+      <path d="M292 190 Q318 230 332 250" stroke="#C68642" stroke-width="15" stroke-linecap="round" fill="none"/>
+    </g>
+    <!-- child left -->
+    <g>
+      <rect x="150" y="300" width="12" height="38" rx="6" fill="#3A86FF"/><rect x="168" y="300" width="12" height="38" rx="6" fill="#3A86FF"/>
+      <path d="M142 250 Q165 238 188 250 L192 306 L138 306 Z" fill="#FFC93C"/>
+      <circle cx="165" cy="222" r="23" fill="#F1C27D"/>
+      <path d="M142 220 Q146 192 165 196 Q186 192 188 220 Q176 206 165 207 Q152 206 142 220 Z" fill="#6B3E26"/>
+      <circle cx="157" cy="224" r="3" fill="#1D3557"/><circle cx="173" cy="224" r="3" fill="#1D3557"/>
+      <path d="M157 233 Q165 240 173 233" stroke="#1D3557" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M188 258 Q182 252 182 250" stroke="#F1C27D" stroke-width="11" stroke-linecap="round" fill="none"/>
+    </g>
+    <!-- child right -->
+    <g>
+      <rect x="340" y="300" width="12" height="38" rx="6" fill="#8338EC"/><rect x="358" y="300" width="12" height="38" rx="6" fill="#8338EC"/>
+      <path d="M330 250 Q355 238 380 250 L388 308 L322 308 Z" fill="#FF8FAB"/>
+      <circle cx="355" cy="222" r="23" fill="#8D5524"/>
+      <path d="M330 226 Q326 192 355 194 Q384 192 380 226 Q384 250 374 252 Q378 214 355 208 Q332 214 336 252 Q326 250 330 226 Z" fill="#1B1B1B"/>
+      <circle cx="347" cy="224" r="3" fill="#1D3557"/><circle cx="363" cy="224" r="3" fill="#1D3557"/>
+      <path d="M347 233 Q355 240 363 233" stroke="#1D3557" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M330 258 Q336 252 334 250" stroke="#8D5524" stroke-width="11" stroke-linecap="round" fill="none"/>
+    </g>
+    <!-- hearts -->
+    <path d="M140 140 c-8-12 -26-4 -18 10 l18 16 l18-16 c8-14 -10-22 -18-10z" fill="#E63946"/>
+    <path d="M380 150 c-6-9 -20-3 -14 8 l14 12 l14-12 c6-11 -8-17 -14-8z" fill="#FF8FAB"/>
+  </svg>
+
+  <div class="topics">
+    <span class="chip" style="background:#E63946">Body Safety</span>
+    <span class="chip" style="background:#3A86FF">Strangers</span>
+    <span class="chip" style="background:#2A9D8F">Water</span>
+    <span class="chip" style="background:#F4A261">Hot Cars</span>
+    <span class="chip" style="background:#8338EC">Road</span>
+    <span class="chip" style="background:#FF8FAB">Online</span>
+    <span class="chip" style="background:#1D3557">Home</span>
+    <span class="chip" style="background:#E76F51">Getting Lost</span>
+  </div>
+
+  <div class="urgent">
+    <div class="icon">!</div>
+    <p>Danger takes <b>seconds</b>. Teaching your child takes <b>minutes</b>.<br>Read it together tonight.</p>
+  </div>
+
+  <div class="foot">
+    <span>Simple rules &middot; Fun pictures &middot; Parent tips on every page</span>
+    <span class="age">AGES 4&ndash;10</span>
+  </div>
+</div>
+</body>
+</html>
