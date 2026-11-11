@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Is Your Child Safe</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:#ddd; font-family:'Nunito',sans-serif; }
+  .page { width:794px; height:1123px; margin:0 auto; position:relative; overflow:hidden; color:#fff;
+          background:radial-gradient(circle at 70% 30%, #23305A 0%, #0E1530 60%, #070B1C 100%); }
+  .tape { position:absolute; left:-40px; right:-40px; height:44px; color:#111; font:900 18px/44px 'Nunito';
+          letter-spacing:4px; white-space:nowrap; text-align:center; overflow:hidden;
+          background:#FFD000; box-shadow:0 6px 18px rgba(0,0,0,.4); }
+  .tape.t1 { top:46px; transform:rotate(-4deg); }
+  .tape.t2 { bottom:58px; transform:rotate(3deg); background:#FF3B3B; color:#fff; letter-spacing:2px; font-size:17px; }
+  .wrap { position:absolute; top:130px; left:56px; right:56px; }
+  .q { font-family:'Anton',sans-serif; text-transform:uppercase; line-height:.95; font-size:104px; }
+  .q .y { color:#FFD000; }
+  .q .r { color:#FF3B3B; }
+  .sub { font-size:23px; font-weight:800; margin-top:18px; max-width:330px; line-height:1.35; color:#D9E2FF; }
+  .sign { position:absolute; top:330px; right:-10px; }
+  .check { position:absolute; left:56px; right:56px; top:690px; background:#fff; color:#0E1530;
+           border-radius:22px; padding:22px 26px; box-shadow:0 10px 0 #FFD000; }
+  .check h3 { font:900 20px 'Nunito'; letter-spacing:1px; color:#FF3B3B; margin-bottom:10px; }
+  .check li { list-style:none; font-size:19px; font-weight:800; padding:7px 0 7px 44px; position:relative; border-top:2px dashed #E3E7F2; }
+  .check li:first-child { border-top:0; }
+  .check li::before { content:''; position:absolute; left:4px; top:7px; width:26px; height:26px; border:3px solid #0E1530; border-radius:7px; }
+  .badge { position:absolute; top:665px; right:40px; width:120px; height:120px; border-radius:50%;
+           background:#FF3B3B; color:#fff; text-align:center; font:900 17px/1.15 'Nunito'; padding-top:30px;
+           transform:rotate(10deg); box-shadow:0 0 0 6px #0E1530, 0 0 0 10px #FF3B3B; }
+  .badge b { display:block; font-size:30px; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="tape t1">⚠ PARENT ALERT ⚠ PARENT ALERT ⚠ PARENT ALERT ⚠ PARENT ALERT ⚠</div>
+
+  <div class="wrap">
+    <div class="q">Is your<br><span class="y">child</span><br>really<br><span class="r">safe?</span></div>
+    <p class="sub">8 everyday dangers parents miss, and the simple rules that keep kids safe.</p>
+  </div>
+
+  <!-- warning sign with parent and child -->
+  <svg class="sign" width="400" height="360" viewBox="0 0 400 360" role="img" aria-label="Warning sign showing a parent holding a child's hand">
+    <path d="M200 14 Q214 14 222 28 L388 318 Q396 334 380 342 L20 342 Q4 334 12 318 L178 28 Q186 14 200 14 Z" fill="#FFD000" stroke="#0E1530" stroke-width="6"/>
+    <path d="M200 50 L356 318 L44 318 Z" fill="none" stroke="#0E1530" stroke-width="10" stroke-linejoin="round"/>
+    <!-- parent -->
+    <circle cx="170" cy="150" r="20" fill="#0E1530"/>
+    <path d="M150 178 Q170 168 190 178 L196 250 L144 250 Z" fill="#0E1530"/>
+    <rect x="152" y="246" width="14" height="52" rx="7" fill="#0E1530"/><rect x="174" y="246" width="14" height="52" rx="7" fill="#0E1530"/>
+    <path d="M190 190 Q210 214 226 226" stroke="#0E1530" stroke-width="12" stroke-linecap="round" fill="none"/>
+    <!-- child -->
+    <circle cx="240" cy="210" r="15" fill="#FF3B3B"/>
+    <path d="M224 232 Q240 224 256 232 L260 278 L220 278 Z" fill="#FF3B3B"/>
+    <rect x="228" y="274" width="11" height="26" rx="5" fill="#FF3B3B"/><rect x="243" y="274" width="11" height="26" rx="5" fill="#FF3B3B"/>
+  </svg>
+
+
+  <div class="check">
+    <h3>TAKE THE 10-SECOND TEST. CAN YOUR CHILD...</h3>
+    <ul>
+      <li>Say your phone number by heart?</li>
+      <li>Tell you what to do if they get lost in a mall?</li>
+      <li>Say NO to a "safe" grown-up asking for a secret?</li>
+      <li>Explain why they never play near water alone?</li>
+    </ul>
+  </div>
+
+  <div class="tape t2">IF YOU TICKED FEWER THAN 4, READ THIS TONIGHT &bull; AGES 4–10</div>
+</div>
+</body>
+</html>
